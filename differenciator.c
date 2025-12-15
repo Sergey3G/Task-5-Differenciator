@@ -12,8 +12,8 @@
 
 #define U (node->left)
 #define V (node->right)
-#define DU differenciate_tree(U)
-#define DV differenciate_tree(V)
+#define DU differenciate_tree(U, var_name)
+#define DV differenciate_tree(V, var_name)
 #define CU copy_tree(U)
 #define CV copy_tree(V)
 #define CN(n) make_const((n))
@@ -82,6 +82,7 @@ TreeNode* copy_tree(TreeNode* node)
         return NULL;
 
     new_node->value = copy_value(node->value);
+    new_node->id = -1;
 
     new_node->left = copy_tree(node->left);
     if (new_node->left)
@@ -99,18 +100,23 @@ static TreeNode* make_const(double value)
 {
     char buf[64] = {0};
     snprintf(buf, sizeof(buf), "%.17g", value);
-    return construct_node(CONST, buf);
+    TreeNode* node = construct_node(CONST, buf);
+    node->id = -1;
+    return node;
 }
 
 static TreeNode* make_var(char name)
 {
     char buf[2] = {name, '\0'};
-    return construct_node(VAR, buf);
+    TreeNode* node = construct_node(VAR, buf);
+    node->id = -1;
+    return node;
 }
 
 static TreeNode* make_op(const char* op, TreeNode* L, TreeNode* R)
 {
     TreeNode* node = construct_node(OP, op);
+    node->id = -1;
     node->left = L;
     node->right = R;
 
@@ -122,17 +128,23 @@ static TreeNode* make_op(const char* op, TreeNode* L, TreeNode* R)
     return node;
 }
 
-TreeNode* differenciate_tree(TreeNode* node)
+TreeNode* differenciate_tree(TreeNode* node, char var_name)
 {
     if (!node)
         return NULL;
 
+    if (var_name == 'e')
+    {
+        printf("You cannot differenciate by constant!\n");
+        return node;
+    }
+
     NodeValue* value = node->value;
 
-    if (value->type == CONST)
+    if (value->type == CONST || (value->type == VAR && value->var_name != var_name))
         return CN(0);
 
-    if (value->type == VAR)
+    if (value->type == VAR && value->var_name == var_name)
         return CN(1);
 
     OperatorCode op = value->operation->code;

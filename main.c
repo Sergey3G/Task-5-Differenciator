@@ -25,25 +25,30 @@ int main(const int argc, char* argv[])
         return 1;
     }
     char* filename2 = argv[2];
+    char* filename3 = argv[3];
     char* p = buffer1->ptr;
     char* end = buffer1->ptr + buffer1->len;
 
-    TreeNode* tree = parse_tree(&p, end);
+    TreeNode* original = parse_tree(&p, end);
+    TreeNode* work = copy_tree(original);
 
-    TreeNode* simplified = simplify_tree(tree);
-    free_subtree(tree);
-    tree = simplified;
+    TreeNode* simplified = simplify_tree(work);
+    free_subtree(work);
+    work = simplified;
 
-    TreeNode* diff = differenciate_tree(tree);
-    free_subtree(tree);
-    tree = diff;
+    TreeNode* diff = differenciate_tree(work, 'x');
+    free_subtree(work);
+    work = diff;
 
-    TreeNode* diff_simple = simplify_tree(tree);
-    free_subtree(tree);
-    tree = diff_simple;
+    TreeNode* diff_simple = simplify_tree(work);
+    free_subtree(work);
+    work = diff_simple;
 
-    tree_dump(tree, filename2);
+    tree_dump(work, filename2);
+    tex_dump(filename3, original, work);
+
+    free_subtree(original);
+    free_subtree(work);
     free(buffer1->ptr);
     free(buffer1);
-    free_subtree(tree);
 }

@@ -1,14 +1,17 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[russian,english]{babel}
 \usepackage[T2A]{fontenc}
-\usepackage[left=10mm, top=20mm, right=10mm, bottom=15mm, footskip=13mm]{geometry}
+\usepackage[left=20mm, top=30mm, right=20mm, bottom=30mm, footskip=13mm]{geometry}
 \usepackage{indentfirst}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage[italicdiff]{physics}
 \usepackage{caption}
 \usepackage{array}
+\usepackage{float}
+\captionsetup[figure]{name=Рисунок}
+\captionsetup[table]{name=Таблица}
 
 \title{Дифференциатор}
 
@@ -16,3 +19,79 @@
 
 \begin{document}
 
+\maketitle
+
+\newpage
+
+\section{Результат дифференцирования}
+
+\[
+{\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)^{\left(x\right)^{5}}}\cdot{{{{5}\cdot{\left(x\right)^{4}}}\cdot{\ln\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)} + {\left(x\right)^{5}}\cdot{\frac{\frac{{{{\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}}\cdot{{\sin\left(x\right) - \sh\left(x\right)}} - {{\arctg\left(\cos\left(x\right)\right) - x}}\cdot{{\cos\left(x\right) - \ch\left(x\right)}}}}{\left({\sin\left(x\right) - \sh\left(x\right)}\right)^{2}}}{\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}}}}}
+\]
+
+\section{Пошаговое дифференцирование}
+
+\[
+\begin{aligned}
+1.\quad &\frac{d}{dx}\left(\cos\left(x\right)\right) \\
+&= -\sin\left(x\right)
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+2.\quad &\frac{d}{dx}\left(\arctg\left(\cos\left(x\right)\right)\right) \\
+&= \frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}}
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+3.\quad &\frac{d}{dx}\left({\arctg\left(\cos\left(x\right)\right) - x}\right) \\
+&= {\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+4.\quad &\frac{d}{dx}\left(\sin\left(x\right)\right) \\
+&= \cos\left(x\right)
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+5.\quad &\frac{d}{dx}\left(\sh\left(x\right)\right) \\
+&= \ch\left(x\right)
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+6.\quad &\frac{d}{dx}\left({\sin\left(x\right) - \sh\left(x\right)}\right) \\
+&= {\cos\left(x\right) - \ch\left(x\right)}
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+7.\quad &\frac{d}{dx}\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right) \\
+&= \frac{{{{\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}}\cdot{{\sin\left(x\right) - \sh\left(x\right)}} - {{\arctg\left(\cos\left(x\right)\right) - x}}\cdot{{\cos\left(x\right) - \ch\left(x\right)}}}}{\left({\sin\left(x\right) - \sh\left(x\right)}\right)^{2}}
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+8.\quad &\frac{d}{dx}\left(\left(x\right)^{5}\right) \\
+&= {5}\cdot{\left(x\right)^{4}}
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+9.\quad &\frac{d}{dx}\left(\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)^{\left(x\right)^{5}}\right) \\
+&= {\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)^{\left(x\right)^{5}}}\cdot{{{{5}\cdot{\left(x\right)^{4}}}\cdot{\ln\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)} + {\left(x\right)^{5}}\cdot{\frac{\frac{{{{\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}}\cdot{{\sin\left(x\right) - \sh\left(x\right)}} - {{\arctg\left(\cos\left(x\right)\right) - x}}\cdot{{\cos\left(x\right) - \ch\left(x\right)}}}}{\left({\sin\left(x\right) - \sh\left(x\right)}\right)^{2}}}{\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}}}}}
+\end{aligned}
+\]
+
+\end{document}

@@ -62,6 +62,7 @@ typedef struct TreeNode
     NodeValue* value;
     TreeNode* left;
     TreeNode* right;
+    int id;
 } TreeNode;
 
 TreeNode* construct_node(ValueType type, const char* value_str);

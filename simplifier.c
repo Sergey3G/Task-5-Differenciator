@@ -8,12 +8,15 @@ static TreeNode* make_const(double value)
 {
     char buf[64] = {0};
     snprintf(buf, sizeof(buf), "%.17g", value);
-    return construct_node(CONST, buf);
+    TreeNode* node = construct_node(CONST, buf);
+    node->id = -1;
+    return node;
 }
 
 static TreeNode* make_op(const char* name, TreeNode* left, TreeNode* right)
 {
     TreeNode* node = construct_node(OP, name);
+    node->id = -1;
     node->left = left;
     node->right = right;
     if (left)
@@ -27,6 +30,7 @@ static TreeNode* make_op(const char* name, TreeNode* left, TreeNode* right)
 static TreeNode* make_exp(TreeNode* argument)
 {
     TreeNode* node = construct_node(OP, "exp");
+    node->id = -1;
     node->left = argument;
     argument->parent = node;
     return node;
@@ -83,7 +87,7 @@ static TreeNode* fold_constants(TreeNode* node)
 static TreeNode* simplify_add(TreeNode* node)
 {
     if (is_equal(node->left, 0)) return copy_tree(node->right);
-    if (is_equal(node->right, 0)) return copy_tree(node->right);
+    if (is_equal(node->right, 0)) return copy_tree(node->left);
     return node;
 }
 
@@ -115,7 +119,8 @@ static TreeNode* simplify_pow(TreeNode* node)
     if (is_equal(node->left, 1)) return make_const(1);
     if (is_equal(node->right, 0)) return make_const(1);
 
-    if (node->left->value->type == CONST && is_equal(node->left, M_E))
+    if ((node->left->value->type == CONST && is_equal(node->left, M_E))
+                                          || node->left->value->type == VAR && node->left->value->var_name == 'e')
     {
         return make_op("exp", copy_tree(node->right), NULL);
     }

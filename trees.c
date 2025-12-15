@@ -29,6 +29,8 @@ static const Operator OPERATORS[] = {{"+", ADD},
                                      {"exp", EXP},
                                      {NULL, NULL_OP}};
 
+static int GLOBAL_NODE_ID = 0;
+
 TreeNode* construct_node(ValueType type, const char* value_str)
 {
     TreeNode* node = (TreeNode*)calloc(1, sizeof(TreeNode));
@@ -160,6 +162,7 @@ TreeNode* parse_tree(char** p, char* end)
 
     ValueType type = detect_type(val);
     TreeNode* node = construct_node(type, val);
+    node->id = GLOBAL_NODE_ID++;
     skip_spaces(p);
 
     node->left = parse_tree(p, end);
