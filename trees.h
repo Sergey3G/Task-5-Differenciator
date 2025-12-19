@@ -11,7 +11,8 @@ typedef enum ValueType
 {
     VAR = 1,
     CONST = 2,
-    OP = 3
+    OP = 3,
+    PEANO = 4
 } ValueType;
 
 typedef enum OperatorCode
@@ -45,6 +46,13 @@ typedef struct Operator
     OperatorCode code;
 } Operator;
 
+typedef struct Peano
+{
+    char var;
+    double a;
+    int power;
+} Peano;
+
 typedef struct NodeValue
 {
     ValueType type;
@@ -53,6 +61,7 @@ typedef struct NodeValue
         double constant;
         char var_name;
         Operator* operation;
+        Peano* peano;
     };
 } NodeValue;
 
@@ -73,5 +82,6 @@ TreeNode* parse_tree(char** p, char* end);
 void free_subtree(TreeNode* node);
 void free_node(TreeNode* node);
 String* file_to_buffer(const char* filename);
+double eval_tree(TreeNode* node, char var, double value);
 
 #endif

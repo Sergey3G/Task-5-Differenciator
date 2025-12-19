@@ -5,6 +5,8 @@
 
 #include "differenciator.h"
 #include "simplifier.h"
+#include "taylor.h"
+#include "my_assert.h"
 
 #define OP(name, L, R) make_op((name), (L), (R))
 #define CONST(x) make_const((x))
@@ -38,11 +40,7 @@ NodeValue* copy_value(const NodeValue* src)
         return NULL;
 
     NodeValue* value = (NodeValue*)calloc(1, sizeof(NodeValue));
-    if (!value)
-    {
-        printf("Error: memory allocation failed!\n");
-        return NULL;
-    }
+    MY_ASSERT(value, "Error: memory allocation failed!\n");
 
     value->type = src->type;
 
@@ -56,14 +54,16 @@ NodeValue* copy_value(const NodeValue* src)
             break;
         case OP:
             value->operation = (Operator*)calloc(1, sizeof(Operator));
-            if (!value->operation)
-            {
-                free(value);
-                printf("Error: memory allocation failed!\n");
-                return NULL;
-            }
+            MY_ASSERT(value->operation, "Error: memory allocation failed!\n");
             value->operation->name = strdup(src->operation->name);
             value->operation->code = src->operation->code;
+            break;
+        case PEANO:
+            value->peano = (Peano*)calloc(1, sizeof(Peano));
+            MY_ASSERT(value->peano, "Error: memory allocation failed!\n");
+            value->peano->a = src->peano->a;
+            value->peano->var = src->peano->var;
+            value->peano->power = src->peano->power;
             break;
         default:
             break;
@@ -78,8 +78,7 @@ TreeNode* copy_tree(TreeNode* node)
         return NULL;
 
     TreeNode* new_node = (TreeNode*)calloc(1, sizeof(TreeNode));
-    if (!new_node)
-        return NULL;
+    MY_ASSERT(new_node, "Error: memory allocation for new_node failed!\n");
 
     new_node->value = copy_value(node->value);
     new_node->id = -1;
@@ -146,6 +145,13 @@ TreeNode* differenciate_tree(TreeNode* node, char var_name)
 
     if (value->type == VAR && value->var_name == var_name)
         return CN(1);
+
+    if (value->type == PEANO)
+    {
+        printf("Called make_peano\n");
+        printf("%c", value->peano->var);
+        return make_peano(value->peano->var, value->peano->a, value->peano->power);
+    }
 
     OperatorCode op = value->operation->code;
 

@@ -4,21 +4,21 @@ CFLAGS = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loo
 
 TARGET = program
 
-OBJS = main.o trees.o graph.o tex.o calculator.o simplifier.o differenciator.o
+OBJS = main.o trees.o graph.o tex.o calculator.o simplifier.o differenciator.o taylor.o
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-main.o: main.c trees.h graph.h tex.h calculator.h
+main.o: main.c trees.h graph.h tex.h calculator.h simplifier.h differenciator.h taylor.h my_assert.h
 	$(CC) $(CFLAGS) -c main.c -o main.o
 
-trees.o: trees.c trees.h
+trees.o: trees.c trees.h my_assert.h
 	$(CC) $(CFLAGS) -c trees.c -o trees.o
 
 graph.o: graph.c graph.h trees.h
 	$(CC) $(CFLAGS) -c graph.c -o graph.o
 
-tex.o: tex.c tex.h trees.h
+tex.o: tex.c tex.h trees.h my_assert.h
 	$(CC) $(CFLAGS) -c tex.c -o tex.o
 
 calculator.o: calculator.c calculator.h
@@ -27,8 +27,11 @@ calculator.o: calculator.c calculator.h
 simplifier.o: simplifier.c simplifier.h trees.h
 	$(CC) $(CFLAGS) -c simplifier.c -o simplifier.o
 
-differenciator.o: differenciator.c differenciator.h trees.h
+differenciator.o: differenciator.c differenciator.h trees.h my_assert.h
 	$(CC) $(CFLAGS) -c differenciator.c -o differenciator.o
+
+taylor.o: taylor.c taylor.h trees.h simplifier.h differenciator.h my_assert.h
+	$(CC) $(CFLAGS) -c taylor.c -o taylor.o
 
 clean:
 	rm -f $(OBJS) $(TARGET)

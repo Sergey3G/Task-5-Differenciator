@@ -23,7 +23,6 @@ static TreeNode* make_op(const char* name, TreeNode* left, TreeNode* right)
         left->parent = node;
     if (right)
         right->parent = node;
-
     return node;
 }
 
@@ -88,6 +87,7 @@ static TreeNode* simplify_add(TreeNode* node)
 {
     if (is_equal(node->left, 0)) return copy_tree(node->right);
     if (is_equal(node->right, 0)) return copy_tree(node->left);
+    if ()
     return node;
 }
 
@@ -99,6 +99,9 @@ static TreeNode* simplify_sub(TreeNode* node)
 
 static TreeNode* simplify_mul(TreeNode* node)
 {
+    node->left->value->type == CONST ? node->left->value->constant : -999;
+    node->right->value->type == CONST ? node->right->value->constant : -999;
+
     if (is_equal(node->left, 0) || is_equal(node->right, 0))
         return make_const(0);
     if (is_equal(node->right, 1)) return copy_tree(node->left);
@@ -158,17 +161,16 @@ TreeNode* simplify_tree(TreeNode* node)
     if (!node)
         return NULL;
 
+    if (node->value->type == PEANO)
+        return copy_tree(node);
+
     if (node->value->type != OP)
         return copy_tree(node);
 
     TreeNode* L = simplify_tree(node->left);
     TreeNode* R = simplify_tree(node->right);
 
-    TreeNode* rebuilt = make_op(
-        node->value->operation->name,
-        L,
-        R
-    );
+    TreeNode* rebuilt = make_op(node->value->operation->name, L, R);
 
     TreeNode* folded = fold_constants(rebuilt);
     if (folded != rebuilt)
@@ -178,6 +180,27 @@ TreeNode* simplify_tree(TreeNode* node)
     }
 
     TreeNode* simplified = NULL;
+
+    if (rebuilt->value->operation->code == MUL)
+    {
+        if (rebuilt->left->value->type == OP &&
+            rebuilt->left->value->operation->code == EXP &&
+            is_equal(rebuilt->left->left, 0))
+        {
+            TreeNode* res = copy_tree(rebuilt->right);
+            free_subtree(rebuilt);
+            return res;
+        }
+
+        if (rebuilt->right->value->type == OP &&
+            rebuilt->right->value->operation->code == EXP &&
+            is_equal(rebuilt->right->left, 0))
+        {
+            TreeNode* res = copy_tree(rebuilt->left);
+            free_subtree(rebuilt);
+            return res;
+        }
+    }
 
     switch (rebuilt->value->operation->code)
     {

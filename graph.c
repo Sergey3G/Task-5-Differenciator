@@ -22,6 +22,11 @@ static void format_node_value(const NodeValue* val, char* val_buf, size_t val_si
             snprintf(type_buf, type_size, "OPERATION");
             break;
 
+        case PEANO:
+            snprintf(val_buf, val_size, "var = %c; a = %.5g; power = %d", val->peano->var, val->peano->a, val->peano->power);
+            snprintf(type_buf, type_size, "PEANO");
+            break;
+
         default:
             snprintf(val_buf, val_size, "?");
             break;

@@ -4,9 +4,12 @@
 #include "tex.h"
 #include "simplifier.h"
 #include "differenciator.h"
+#include "my_assert.h"
 
 static void tex_print_derivative(FILE* file, TreeNode* node)
 {
+    MY_ASSERT(file, "Error: given nullptr to file!\n");
+    MY_ASSERT(node, "Error: given nullptr to node!\n");
     fprintf(file, "\\frac{d}{dx}\\left(");
     tex_print_expr(file, node);
     fprintf(file, "\\right)");
@@ -42,8 +45,7 @@ int op_priority(OperatorCode op)
 
 void print_expr(TreeNode* node)
 {
-    if (!node)
-        return;
+    MY_ASSERT(node, "Error: given nullptr to node!\n");
 
     NodeValue* value = node->value;
 
@@ -56,6 +58,16 @@ void print_expr(TreeNode* node)
     if (value->type == VAR)
     {
         printf("%c", value->var_name);
+        return;
+    }
+
+    if (value->type == PEANO)
+    {
+        MY_ASSERT(value->peano, "Error: in peano node value is nullptr!\n");
+        if (fabs(value->peano->a) < 1e-12)
+            printf("o(%c^%d)", value->peano->var, value->peano->power);
+        else
+            printf("o((%c - %.5g)^%d)", value->peano->var, value->peano->a, value->peano->power);
         return;
     }
 
@@ -86,15 +98,20 @@ void print_expr(TreeNode* node)
     if (need_r) printf(")");
 }
 
-void tex_dump(const char* filename, TreeNode* original, TreeNode* diff)
+void tex_dump(const char* filename, TreeNode* original, TreeNode* diff, TreeNode* taylor)
 {
     FILE* file = fopen(filename, "w");
-    if (!file)
-    {
-        fprintf(stderr, "Error: cannot open file %s!\n", filename);
-        return;
-    }
+    MY_ASSERT(file, "Error: cannot open file by filename!\n");
+    MY_ASSERT(original, "Error: given nullptr to original!\n");
+    MY_ASSERT(diff, "Error: given nullptr to diff!\n");
+    MY_ASSERT(taylor, "Error: given nullptr to taylor!\n");
 
+    print_expr(original);
+    printf("\n");
+    print_expr(diff);
+    printf("\n");
+    print_expr(taylor);
+    printf("\n");
     fprintf(file, "\\documentclass[a4paper,12pt]{article}\n"
                   "\\usepackage[utf8]{inputenc}\n"
                   "\\usepackage[russian,english]{babel}\n"
@@ -118,28 +135,44 @@ void tex_dump(const char* filename, TreeNode* original, TreeNode* diff)
     fprintf(file, "\\[\n");
     tex_print_expr(file, diff);
     fprintf(file, "\n\\]\n\n");
+    printf("Ended first derivative\n");
     fprintf(file, "\\section{Пошаговое дифференцирование}\n\n");
     int step = 1;
     diff_each_node(original, 'x', file, &step);
+    printf("Ended stepped differenciation\n");
+    fprintf(file, "\\section{Разложение по Тейлору с членом в форме Пеано}\n");
+    fprintf(file, "\\[\n");
+    tex_print_expr(file, taylor);
+    printf("Ended Taylor\n");
+    fprintf(file, "\n\\]\n\n");
     fprintf(file, "\\end{document}");
 }
 
 void tex_print_expr(FILE* file, TreeNode* node)
 {
-    if (!node)
-        return;
+    MY_ASSERT(file, "Error: given nullptr to file!\n");
+    MY_ASSERT(file, "Error: given nullptr to node!\n");
 
     NodeValue* v = node->value;
 
     if (v->type == CONST)
     {
-        fprintf(file, "%.10g", v->constant);
+        fprintf(file, "%.5g", v->constant);
         return;
     }
 
     if (v->type == VAR)
     {
         fprintf(file, "%c", v->var_name);
+        return;
+    }
+
+    if (v->type == PEANO)
+    {
+        if (fabs(v->peano->a) < 1e-12)\
+            fprintf(file, "o\\left(%c^{%d}\\right)", v->peano->var, v->peano->power);
+        else
+            fprintf(file, "o\\left((%c - %.5g)^{%d}\\right)", v->peano->var, v->peano->a, v->peano->power);
         return;
     }
 
@@ -222,6 +255,8 @@ void tex_print_expr(FILE* file, TreeNode* node)
         case CTG:
         case SH:
         case CH:
+        case TH:
+        case CTH:
         case EXP:
         case ARCSIN:
         case ARCCOS:
@@ -271,6 +306,8 @@ void diff_each_node(TreeNode* node, char var, FILE* tex, int* step)
     TreeNode* diff = differenciate_tree(node, var);
     TreeNode* simple = simplify_tree(diff);
 
+    free_subtree(diff);
+
     tex_print_expr(tex, simple);
 
     fprintf(tex,
@@ -278,7 +315,6 @@ void diff_each_node(TreeNode* node, char var, FILE* tex, int* step)
         "\\]\n\n"
     );
 
-    free_subtree(diff);
     free_subtree(simple);
 }
 

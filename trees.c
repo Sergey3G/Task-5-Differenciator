@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "trees.h"
+#include "my_assert.h"
 
 static const Operator OPERATORS[] = {{"+", ADD},
                                      {"-", SUB},
@@ -34,18 +35,10 @@ static int GLOBAL_NODE_ID = 0;
 TreeNode* construct_node(ValueType type, const char* value_str)
 {
     TreeNode* node = (TreeNode*)calloc(1, sizeof(TreeNode));
-    if (!node)
-    {
-        fprintf(stderr, "Error: memory allocation for node failed!\n");
-        return NULL;
-    }
+    MY_ASSERT(node, "Error: memory allocation for node failed!\n");
 
     node->value = (NodeValue*)calloc(1, sizeof(NodeValue));
-    if (!node->value)
-    {
-        fprintf(stderr, "Error: memory allocation for node value failed!\n");
-        return NULL;
-    }
+    MY_ASSERT(node->value, "Error: memory allocation for node->value failed!\n");
 
     node->parent = NULL;
     node->left = node->right = NULL;
@@ -61,24 +54,11 @@ TreeNode* construct_node(ValueType type, const char* value_str)
 
         case CONST:
             node->value->constant = strtod(value_str, &endptr);
-
-            if (endptr == value_str)
-            {
-                fprintf(stderr, "Error: %s is not a number!\n", value_str);
-                free(node->value);
-                free(node);
-                return NULL;
-            }
+            MY_ASSERT(endptr != value_str, "Error: given string is not a number!\n");
             break;
         case OP:
             node->value->operation = (Operator*)calloc(1, sizeof(Operator));
-            if (!node->value->operation)
-            {
-                fprintf(stderr, "Error: memory allocation for operation failed!\n");
-                free(node->value);
-                free(node);
-                return NULL;
-            }
+            MY_ASSERT(node->value->operation, "Error: memory allocation in construct_node for node->value->operation failed!\n");
             node->value->operation->name = strdup(value_str);
             node->value->operation->code = get_operator_code(value_str);
             break;
@@ -202,6 +182,13 @@ void free_subtree(TreeNode* node)
                 free(node->value->operation);
             }
         }
+        if (node->value->type == PEANO)
+        {
+            if (node->value->peano)
+            {
+                free(node->value->peano);
+            }
+        }
         free(node->value);
     }
     free(node);
@@ -232,32 +219,71 @@ String* file_to_buffer(const char* filename)
 
     size_t file_size = (size_t)st.st_size;
     FILE* file = fopen(filename, "r");
-    if (!file)
-    {
-        printf("Error: cannot open file %s!\n", filename);
-        return NULL;
-    }
+    MY_ASSERT(file, "Error: cannot open file!\n");
 
     char* buffer = (char*)calloc(file_size + 1, sizeof(char));
-    if (!buffer)
-    {
-        printf("Error: memory allocarion failed!\n");
-        return NULL;
-    }
+    MY_ASSERT(buffer, "Error: memory allocation for buffer failed!\n");
 
     size_t read_size = fread(buffer, sizeof(char), file_size, file);
     fclose(file);
-    if (read_size != file_size)
-    {
-        printf("Error: cannot read file content!\n");
-        free(buffer);
-        return NULL;
-    }
+    MY_ASSERT(read_size == file_size, "Error: cannot read file content!\n");
 
     buffer[file_size] = '\0';
 
     String* string = (String*)calloc(1, sizeof(String));
+    MY_ASSERT(string, "Error: memory allocation for string failed!\n");
     string->ptr = buffer;
     string->len = read_size + 1;
     return string;
+}
+
+double eval_tree(TreeNode* node, char var, double value)
+{
+    if (!node)
+        return 0;
+
+    if (node->value->type == PEANO)
+    {
+        printf("Cannot evaluate Peano term!\n");
+        return NAN;
+    }
+
+    NodeValue* v = node->value;
+
+    if (v->type == CONST)
+        return v->constant;
+
+    if (v->type == VAR)
+        return (v->var_name == var) ? value : 0;
+
+    double L = node->left ? eval_tree(node->left, var, value) : 0;
+    double R = node->right ? eval_tree(node->right, var, value) : 0;
+
+    switch (v->operation->code)
+    {
+        case ADD: return L + R;
+        case SUB: return L - R;
+        case MUL: return L * R;
+        case DIV: return L / R;
+        case POW: return pow(L, R);
+        case SIN: return sin(L);
+        case COS: return cos(L);
+        case LN: return log(L);
+        case EXP: return exp(L);
+        case SQRT: return sqrt(L);
+        case TG: return tan(L);
+        case CTG: return 1 / tan(L);
+        case SH: return sinh(L);
+        case CH: return cosh(L);
+        case TH: return tanh(L);
+        case CTH: return 1 / tanh(L);
+        case ARCSIN: return asin(L);
+        case ARCCOS: return acos(L);
+        case ARCTG: return atan(L);
+        case ARCCTG: return M_PI - atan(L);
+        case NULL_OP:
+        default:
+            printf("Unsupported operation in eval!\n");
+            return 0;
+    }
 }

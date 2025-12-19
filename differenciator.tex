@@ -26,72 +26,28 @@
 \section{Результат дифференцирования}
 
 \[
-{\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)^{\left(x\right)^{5}}}\cdot{{{{5}\cdot{\left(x\right)^{4}}}\cdot{\ln\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)} + {\left(x\right)^{5}}\cdot{\frac{\frac{{{{\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}}\cdot{{\sin\left(x\right) - \sh\left(x\right)}} - {{\arctg\left(\cos\left(x\right)\right) - x}}\cdot{{\cos\left(x\right) - \ch\left(x\right)}}}}{\left({\sin\left(x\right) - \sh\left(x\right)}\right)^{2}}}{\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}}}}}
+{\cos\left(\left(2\right)^{x}\right)}\cdot{{\left(2\right)^{x}}\cdot{\ln\left(2\right)}}
 \]
 
 \section{Пошаговое дифференцирование}
 
 \[
 \begin{aligned}
-1.\quad &\frac{d}{dx}\left(\cos\left(x\right)\right) \\
-&= -\sin\left(x\right)
+1.\quad &\frac{d}{dx}\left(\left(2\right)^{x}\right) \\
+&= {\left(2\right)^{x}}\cdot{\ln\left(2\right)}
 \end{aligned}
 \]
 
 \[
 \begin{aligned}
-2.\quad &\frac{d}{dx}\left(\arctg\left(\cos\left(x\right)\right)\right) \\
-&= \frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}}
+2.\quad &\frac{d}{dx}\left(\sin\left(\left(2\right)^{x}\right)\right) \\
+&= {\cos\left(\left(2\right)^{x}\right)}\cdot{{\left(2\right)^{x}}\cdot{\ln\left(2\right)}}
 \end{aligned}
 \]
 
+\section{Разложение по Тейлору с членом в форме Пеано}
 \[
-\begin{aligned}
-3.\quad &\frac{d}{dx}\left({\arctg\left(\cos\left(x\right)\right) - x}\right) \\
-&= {\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
-4.\quad &\frac{d}{dx}\left(\sin\left(x\right)\right) \\
-&= \cos\left(x\right)
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
-5.\quad &\frac{d}{dx}\left(\sh\left(x\right)\right) \\
-&= \ch\left(x\right)
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
-6.\quad &\frac{d}{dx}\left({\sin\left(x\right) - \sh\left(x\right)}\right) \\
-&= {\cos\left(x\right) - \ch\left(x\right)}
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
-7.\quad &\frac{d}{dx}\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right) \\
-&= \frac{{{{\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}}\cdot{{\sin\left(x\right) - \sh\left(x\right)}} - {{\arctg\left(\cos\left(x\right)\right) - x}}\cdot{{\cos\left(x\right) - \ch\left(x\right)}}}}{\left({\sin\left(x\right) - \sh\left(x\right)}\right)^{2}}
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
-8.\quad &\frac{d}{dx}\left(\left(x\right)^{5}\right) \\
-&= {5}\cdot{\left(x\right)^{4}}
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
-9.\quad &\frac{d}{dx}\left(\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)^{\left(x\right)^{5}}\right) \\
-&= {\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)^{\left(x\right)^{5}}}\cdot{{{{5}\cdot{\left(x\right)^{4}}}\cdot{\ln\left(\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}\right)} + {\left(x\right)^{5}}\cdot{\frac{\frac{{{{\frac{-\sin\left(x\right)}{{1 + \left(\cos\left(x\right)\right)^{2}}} - 1}}\cdot{{\sin\left(x\right) - \sh\left(x\right)}} - {{\arctg\left(\cos\left(x\right)\right) - x}}\cdot{{\cos\left(x\right) - \ch\left(x\right)}}}}{\left({\sin\left(x\right) - \sh\left(x\right)}\right)^{2}}}{\frac{{\arctg\left(\cos\left(x\right)\right) - x}}{{\sin\left(x\right) - \sh\left(x\right)}}}}}}
-\end{aligned}
+{{{{0.84147 + {0.37451}\cdot{x}} + {-0.072349}\cdot{\left(x\right)^{2}}} + {-0.14012}\cdot{\left(x\right)^{3}}} + o\left(x^{3}\right)}
 \]
 
 \end{document}
