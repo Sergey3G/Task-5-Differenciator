@@ -44,8 +44,8 @@ void print_into_python(const char* filename, TreeNode* original, TreeNode* tange
                   "plt.axvline(%lf, color='gray', alpha=0.5)\n"
                   "plt.legend()\n"
                   "plt.grid(True)\n"
-                  "plt.show()\n"
-                  "plt.savefig(sys.argv[1])",
+                  "plt.savefig(sys.argv[1])\n"
+                  "plt.show()\n",
                   var, var, var, var, a);
 
 }

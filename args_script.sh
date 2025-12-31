@@ -11,6 +11,12 @@ SCR_DIR="scripts"
 OUT_TEX="$TEX_DIR/out"
 OUT_SCR="$SCR_DIR/out"
 
+if [ "$1" == "clean" ]; then
+    echo "[CLEAN] Removing outputs"
+    rm -rf "$OUT_TEX" "$OUT_SCR" "$SCR_DIR" "$TEX_DIR"
+    exit 0
+fi
+
 mkdir -p "$SCR_DIR" "$TEX_DIR" "$OUT_SCR" "$OUT_TEX"
 
 TS=$(date +"%Y%m%d_%H%M%S")
