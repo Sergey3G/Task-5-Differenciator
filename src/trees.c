@@ -5,8 +5,8 @@
 #include <sys/stat.h>
 #include <math.h>
 
-#include "trees.h"
-#include "my_assert.h"
+#include "../include/trees.h"
+#include "../include/my_assert.h"
 
 static const Operator OPERATORS[] = {{"+", ADD},
                                      {"-", SUB},

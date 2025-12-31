@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "trees.h"
+#include "../include/trees.h"
 
 static void format_node_value(const NodeValue* val, char* val_buf, size_t val_size, char* type_buf, size_t type_size)
 {

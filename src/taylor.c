@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "taylor.h"
-#include "simplifier.h"
-#include "differenciator.h"
-#include "my_assert.h"
+#include "../include/taylor.h"
+#include "../include/simplifier.h"
+#include "../include/differenciator.h"
+#include "../include/my_assert.h"
 
 #define OP(name, L, R) make_op((name), (L), (R))
 #define CONST(x) make_const((x))

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "simplifier.h"
-#include "differenciator.h"
+#include "../include/simplifier.h"
+#include "../include/differenciator.h"
 
 static TreeNode* make_const(double value)
 {
@@ -87,7 +87,6 @@ static TreeNode* simplify_add(TreeNode* node)
 {
     if (is_equal(node->left, 0)) return copy_tree(node->right);
     if (is_equal(node->right, 0)) return copy_tree(node->left);
-    if ()
     return node;
 }
 

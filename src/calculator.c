@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "calculator.h"
+#include "../include/calculator.h"
 
 int get_p(char** p)
 {

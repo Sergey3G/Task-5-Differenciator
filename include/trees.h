@@ -65,12 +65,12 @@ typedef struct NodeValue
     };
 } NodeValue;
 
-typedef struct TreeNode
+typedef struct _node
 {
-    TreeNode* parent;
+    _node* parent;
     NodeValue* value;
-    TreeNode* left;
-    TreeNode* right;
+    _node* left;
+    _node* right;
     int id;
 } TreeNode;
 

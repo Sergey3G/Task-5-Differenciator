@@ -3,10 +3,11 @@
 #include <string.h>
 #include <math.h>
 
-#include "differenciator.h"
-#include "simplifier.h"
-#include "taylor.h"
-#include "my_assert.h"
+#include "../include/differenciator.h"
+#include "../include/simplifier.h"
+#include "../include/taylor.h"
+#include "../include/my_assert.h"
+#include "../include/trees.h"
 
 #define OP(name, L, R) make_op((name), (L), (R))
 #define CONST(x) make_const((x))
@@ -188,4 +189,28 @@ TreeNode* differenciate_tree(TreeNode* node, char var_name)
             printf("Unsupported operator in differenciator!\n");
             return NULL;
     }
+}
+
+TreeNode* find_tangent(TreeNode* node, char var_name, double a)
+{
+    MY_ASSERT(node, "Error: node is nullptr!\n");
+    TreeNode* node_copy = copy_tree(node);
+    TreeNode* diff = differenciate_tree(node_copy, var_name);
+    free_subtree(node_copy);
+
+    TreeNode* diff_simple = simplify_tree(diff);
+    free_subtree(diff);
+    double func_value = eval_tree(node, var_name, a);
+    double diff_value = eval_tree(diff_simple, var_name, a);
+
+    if (isnan(func_value) || isnan(diff_value))
+    {
+        printf("Targent is undefined at x = %g\n", a);
+        free_subtree(diff_simple);
+        return NULL;
+    }
+
+    TreeNode* tangent = ADD_(CN(func_value), MUL_(CN(diff_value), SUB_(VAR(var_name), CN(a))));
+    free_subtree(diff_simple);
+    return tangent;
 }

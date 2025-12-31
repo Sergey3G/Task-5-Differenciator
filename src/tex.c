@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "tex.h"
-#include "simplifier.h"
-#include "differenciator.h"
-#include "my_assert.h"
+#include "../include/tex.h"
+#include "../include/simplifier.h"
+#include "../include/differenciator.h"
+#include "../include/my_assert.h"
 
 static void tex_print_derivative(FILE* file, TreeNode* node)
 {
