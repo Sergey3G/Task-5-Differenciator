@@ -1,1 +1,1 @@
-(sin (^ (2 nil nil) (x nil nil)) nil)
+(^ (e nil nil) (ln (x nil nil) nil))

@@ -1,4 +1,5 @@
-#include "stdio.h"
+#include <stdio.h>
+#include <math.h>
 
 #include "../include/python_graph.h"
 #include "../include/my_assert.h"
@@ -9,7 +10,7 @@ void print_into_python(const char* filename, TreeNode* original, TreeNode* tange
     MY_ASSERT(filename, "Error: filename is nullptr!\n");
     MY_ASSERT(original, "Error: original function is nullptr!\n");
     MY_ASSERT(taylor, "Error: taylor is nullptr!\n");
-    MY_ASSERT(tangent, "Error: diff is nullptr!\n");
+    MY_ASSERT(tangent, "Error: tangent is nullptr!\n");
 
     MY_ASSERT(taylor->right || taylor->right->value->type == PEANO, "Error: Taylor has no Peano term!\n");
 
@@ -65,7 +66,10 @@ void python_print_expression(FILE* file, TreeNode* node)
 
     if (value->type == VAR)
     {
-        fprintf(file, "%c", value->var_name);
+        if (value->var_name != 'e')
+            fprintf(file, "%c", value->var_name);
+        else
+            fprintf(file, "%.5g", M_E);
         return;
     }
 

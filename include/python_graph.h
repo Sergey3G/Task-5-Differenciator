@@ -1,6 +1,8 @@
 #ifndef PYTHON_GRAPH_H
 #define PYTHON_GRAPH_H
 
+#include <stdio.h>
+
 #include "trees.h"
 
 void print_into_python(const char* filename, TreeNode* original, TreeNode* diff, TreeNode* taylor);

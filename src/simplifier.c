@@ -98,9 +98,6 @@ static TreeNode* simplify_sub(TreeNode* node)
 
 static TreeNode* simplify_mul(TreeNode* node)
 {
-    node->left->value->type == CONST ? node->left->value->constant : -999;
-    node->right->value->type == CONST ? node->right->value->constant : -999;
-
     if (is_equal(node->left, 0) || is_equal(node->right, 0))
         return make_const(0);
     if (is_equal(node->right, 1)) return copy_tree(node->left);

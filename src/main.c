@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -44,10 +45,10 @@ int main(const int argc, char* argv[])
     free_subtree(work);
     work = diff_simple;
 
-    TreeNode* taylor = taylor_peano(original, 'x', 0, 3);
-    TreeNode* tangent = find_tangent(original, 'x', 0);
+    TreeNode* taylor = taylor_peano(original, 'x', M_E, 3);
+    TreeNode* tangent = find_tangent(original, 'x', M_E);
 
-    tree_dump(taylor, graphviz_filename);
+    tree_dump(work, graphviz_filename);
     tex_dump(tex_filename, original, work, taylor);
     print_into_python(python_filename, original, tangent, taylor);
 

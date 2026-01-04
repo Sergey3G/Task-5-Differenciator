@@ -205,7 +205,7 @@ TreeNode* find_tangent(TreeNode* node, char var_name, double a)
 
     if (isnan(func_value) || isnan(diff_value))
     {
-        printf("Targent is undefined at x = %g\n", a);
+        printf("Tangent is undefined at x = %g\n", a);
         free_subtree(diff_simple);
         return NULL;
     }

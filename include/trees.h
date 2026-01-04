@@ -1,6 +1,8 @@
 #ifndef TREES_H
 #define TREES_H
 
+#include <stdlib.h>
+
 typedef struct String
 {
     char* ptr;
@@ -65,12 +67,14 @@ typedef struct NodeValue
     };
 } NodeValue;
 
+
+typedef struct _node TreeNode;
 typedef struct _node
 {
-    _node* parent;
+    struct _node* parent;
     NodeValue* value;
-    _node* left;
-    _node* right;
+    struct _node* left;
+    struct _node* right;
     int id;
 } TreeNode;
 

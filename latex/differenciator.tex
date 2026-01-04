@@ -26,28 +26,28 @@
 \section{Результат дифференцирования}
 
 \[
-{\cos\left(\left(2\right)^{x}\right)}\cdot{{\left(2\right)^{x}}\cdot{\ln\left(2\right)}}
+{x}\cdot{\frac{1}{x}}
 \]
 
 \section{Пошаговое дифференцирование}
 
 \[
 \begin{aligned}
-1.\quad &\frac{d}{dx}\left(\left(2\right)^{x}\right) \\
-&= {\left(2\right)^{x}}\cdot{\ln\left(2\right)}
+1.\quad &\frac{d}{dx}\left(\ln\left(x\right)\right) \\
+&= \frac{1}{x}
 \end{aligned}
 \]
 
 \[
 \begin{aligned}
-2.\quad &\frac{d}{dx}\left(\sin\left(\left(2\right)^{x}\right)\right) \\
-&= {\cos\left(\left(2\right)^{x}\right)}\cdot{{\left(2\right)^{x}}\cdot{\ln\left(2\right)}}
+2.\quad &\frac{d}{dx}\left(\left(e\right)^{\ln\left(x\right)}\right) \\
+&= {\exp\left(\ln\left(x\right)\right)}\cdot{{\frac{1}{x}}\cdot{\ln\left(e\right)}}
 \end{aligned}
 \]
 
 \section{Разложение по Тейлору с членом в форме Пеано}
 \[
-{{{{0.84147 + {0.37451}\cdot{x}} + {-0.072349}\cdot{\left(x\right)^{2}}} + {-0.14012}\cdot{\left(x\right)^{3}}} + o\left(x^{3}\right)}
+{{2.7183 + {x - 2.7183}} + o\left((x - 2.7183)^{3}\right)}
 \]
 
 \end{document}

@@ -254,33 +254,46 @@ double eval_tree(TreeNode* node, char var, double value)
         return v->constant;
 
     if (v->type == VAR)
-        return (v->var_name == var) ? value : 0;
+    {
+        if (v->var_name == var)
+        {
+            return value;
+        }
+        else if (v->var_name == 'e')
+        {
+            return M_E;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
     double L = node->left ? eval_tree(node->left, var, value) : 0;
     double R = node->right ? eval_tree(node->right, var, value) : 0;
 
     switch (v->operation->code)
     {
-        case ADD: return L + R;
-        case SUB: return L - R;
-        case MUL: return L * R;
-        case DIV: return L / R;
-        case POW: return pow(L, R);
-        case SIN: return sin(L);
-        case COS: return cos(L);
-        case LN: return log(L);
-        case EXP: return exp(L);
-        case SQRT: return sqrt(L);
-        case TG: return tan(L);
-        case CTG: return 1 / tan(L);
-        case SH: return sinh(L);
-        case CH: return cosh(L);
-        case TH: return tanh(L);
-        case CTH: return 1 / tanh(L);
-        case ARCSIN: return asin(L);
-        case ARCCOS: return acos(L);
-        case ARCTG: return atan(L);
-        case ARCCTG: return M_PI - atan(L);
+        case ADD: printf("ADD\n"); return L + R;
+        case SUB: printf("SUB\n"); return L - R;
+        case MUL: printf("MUL\n"); return L * R;
+        case DIV: printf("DIV\n"); return L / R;
+        case POW: printf("POW\n"); printf("%.5g ^ %.5g = %.5g\n", L, R, pow(L, R)); return pow(L, R);
+        case SIN: printf("SIN\n"); return sin(L);
+        case COS: printf("COS\n"); return cos(L);
+        case LN: printf("LN\n"); printf("ln(%.5g) = %.5g\n", L, log(L)); return log(L);
+        case EXP: printf("EXP\n"); return exp(L);
+        case SQRT: printf("SQRT\n"); return sqrt(L);
+        case TG: printf("TG\n"); return tan(L);
+        case CTG: printf("CTG\n"); return 1 / tan(L);
+        case SH: printf("SH\n"); return sinh(L);
+        case CH: printf("CH\n"); return cosh(L);
+        case TH: printf("TH\n"); return tanh(L);
+        case CTH: printf("CTH\n"); return 1 / tanh(L);
+        case ARCSIN: printf("ARCSIN\n"); return asin(L);
+        case ARCCOS: printf("ARCCOS\n"); return acos(L);
+        case ARCTG: printf("ARCTG\n"); return atan(L);
+        case ARCCTG: printf("ARCCTG\n"); return M_PI - atan(L);
         case NULL_OP:
         default:
             printf("Unsupported operation in eval!\n");
